@@ -62,21 +62,12 @@ $moreinfo-color:    rgba(255, 255, 255, 0.8);
   .name {
     color: $label-color;
     font-weight: 600;
-    width: 244px;
+	width: 705px;
   }
 
   .status {
     width: 15%;
     text-align: center;
-  }
-
-  .desc {
-    width: 326px;
-  }
-
-  .coverage {
-    width: 130px;
-    margin-right: 0;
   }
 
   .updated-at {
