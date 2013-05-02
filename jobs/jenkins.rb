@@ -1,30 +1,18 @@
-jenkins_host = 'augustus'
-img_path = '/static/foo/images/48x48/'
-port = 8080
+jenkins_host = '127.0.0.1'
+img_path = '/jenkins/static/foo/images/48x48/'
+port = 8081
 
 last_builds = {}
 
 SCHEDULER.every '10s', :first_in => 0 do |foo|
   http = Net::HTTP.new(jenkins_host, port)
-  response = http.request(Net::HTTP::Get.new("/api/json?depth=1"))
+  response = http.request(Net::HTTP::Get.new("/jenkins/view/Dashboard/api/json?depth=1"))
   jobs = JSON.parse(response.body)["jobs"]
 
   builds = []
 
   jobs.map! do |job|
     name = job['name']
-    cov_path = "/job/#{name}/lastBuild/cobertura/api/json?depth=2"
-    response = http.request(Net::HTTP::Get.new(cov_path))
-    coverage = nil
-    if response.code == '200'
-      elements = JSON.parse(response.body)['results']['elements']
-      elements.map! do |element|
-        if element['name'] == 'Conditionals'
-          coverage = element['ratio']
-        end
-      end
-    end
-
     color = job['color'].sub('blue', 'green')
     status = case color
                when 'green' then 'Success'
@@ -46,7 +34,6 @@ SCHEDULER.every '10s', :first_in => 0 do |foo|
       name: name, status: status, health: health_url, color: color
     }
     desc.empty? || build['desc'] = desc
-    coverage && build['coverage'] = coverage.to_i.to_s + '%'
     builds << build
   end
 
