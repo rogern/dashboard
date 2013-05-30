@@ -32,7 +32,7 @@ end
 
 last_events = {}
 
-SCHEDULER.every '6h', :first_in => 0 do |foo|
+SCHEDULER.every '5m', :first_in => 0 do |foo|
   url = url_to_calendar
   today = Date.today.to_s
   tomorrow = (Date.today + 1).to_s
