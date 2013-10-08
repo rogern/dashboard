@@ -1,6 +1,7 @@
-jenkins_host = '127.0.0.1'
+config = YAML.load(File.read("config.yml"))
+jenkins_host = config["jenkins"]["host"]
+port = config["jenkins"]["port"]
 img_path = '/jenkins/static/foo/images/48x48/'
-port = 8081
 
 last_builds = {}
 

@@ -1,16 +1,15 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 
-
 require 'net/http'
 require 'net/https'
 require 'rexml/document'
 require 'date'
 require 'erb'
 
-url_to_calendar = 'https://www.google.com/calendar/feeds'
-developers=%w{Steve Bill Bob}
-
+config = YAML.load(File.read("config.yml"))
+url_to_calendar = config["calendar"]["url"]
+developers = config["calendar"]["developers"]
 class Event 
   attr_accessor :title, :start_time, :end_time
 
