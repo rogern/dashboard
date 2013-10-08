@@ -1,0 +1,7 @@
+jenkins:
+  host: "127.0.0.1"
+  port: 8080
+calendar:
+  url: 'https://www.google.com/calendar/feeds/'
+  developers: [Name1, Name2, Name3]
+
