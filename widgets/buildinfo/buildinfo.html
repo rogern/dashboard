@@ -1,0 +1,14 @@
+<table>
+  <tr data-foreach-item="items">
+    <td data-bind-class="item.ok">
+      <div class="env" data-bind="item.title"></div>
+      <table class="sub">
+        <tr data-foreach-item="item.servers">
+          <td data-bind="item.title"></td>
+          <td data-bind="item.revision"></td>
+          <td data-bind="item.built"></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>

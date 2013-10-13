@@ -4,4 +4,17 @@ jenkins:
 calendar:
   url: 'https://www.google.com/calendar/feeds/'
   developers: [Name1, Name2, Name3]
-
+buildinfo:
+  envs:
+    - title: 'Stage'
+      urls:
+        - title: frontend
+          url: https://somedomain-stage/buildinfo
+        - title: backend
+          url: https://somedomain-stage/api/buildinfo
+    - title: 'Production'
+      urls:
+        - title: frontend
+          url: https://somedomain/buildinfo
+        - title: backend
+          url: https://somedomain/api/buildinfo
