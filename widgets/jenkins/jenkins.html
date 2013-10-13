@@ -1,9 +1,7 @@
-<ul class="list-nostyle">
-  <li data-foreach-item="items">
-    <span class="line-item weather">
-      <img data-bind-src="item.health"></img>
-    </span>
-    <span class="line-item name" data-bind="item.name">&nbsp;</span>
-    <span data-bind="item.status" data-bind-class="item.color | prepend 'line-item status '">&nbsp;</span>
-  </li>
-</ul>
+<table cellpadding="10">
+  <tr data-foreach-item="items">
+    <td><img data-bind-src="item.health" /></td>
+    <td class="name" data-bind="item.name"></td>
+    <td data-bind="item.status" data-bind-class="item.color | prepend 'line-item status '"></td>
+  </tr>
+</table>

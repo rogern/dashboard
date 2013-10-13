@@ -44,8 +44,8 @@ SCHEDULER.every '10s', :first_in => 0 do |foo|
   end
 
   if builds != last_builds
-    puts builds
     last_builds = builds
     send_event('jenkins', { items: builds })
+    puts 'pushed new jenkins event'
   end
 end
