@@ -2,6 +2,7 @@
   <tr data-foreach-item="items">
     <td><img data-bind-src="item.health" /></td>
     <td class="name" data-bind="item.name"></td>
+    <td class="name" data-bind="item.cobertura"></td>
     <td data-bind="item.status" data-bind-class="item.color | prepend 'line-item status '"></td>
   </tr>
 </table>
