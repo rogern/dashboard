@@ -33,7 +33,7 @@ SCHEDULER.every '10s', :first_in => 0 do |foo|
       icon_url = job['healthReport'][0]['iconUrl']
       
       #Cobertura result
-      cobertura_score = "N/A"
+      cobertura_score = "n/a"
       for health in job['healthReport'] do
         if health['description'].include? "Cobertura"
           cobertura_score = health['score'].to_s + "%"
