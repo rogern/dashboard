@@ -32,18 +32,18 @@ SCHEDULER.every '10s', :first_in => 0 do |foo|
                end
       icon_url = job['healthReport'][0]['iconUrl']
       
-      #Cobertura result
-      cobertura_score = "n/a"
+      #Coverage result
+      coverage_score = "n/a"
       for health in job['healthReport'] do
-        if health['description'].include? "Cobertura"
-          cobertura_score = health['score'].to_s + "%"
+        if health['description'].include? "Coverage"
+          coverage_score = health['score'].to_s + "%"
         end
       end
       
       health_url = "http://#{jenkins_host}:#{port}#{img_path}#{icon_url}"
       desc = job['description']
       build = {
-        name: name, status: status, health: health_url, color: color, cobertura: cobertura_score
+        name: name, status: status, health: health_url, color: color, coverage: coverage_score
       }
       desc.empty? || build['desc'] = desc
       builds << build
