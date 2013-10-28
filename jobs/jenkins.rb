@@ -1,7 +1,7 @@
 config = YAML.load(File.read("config.yml"))
 jenkins_host = config["jenkins"]["host"]
 port = config["jenkins"]["port"]
-img_path = '/jenkins/static/foo/images/48x48/'
+img_path = '/static/foo/images/48x48/'
 
 last_builds = {}
 
@@ -10,7 +10,7 @@ def fetch_build_coverage (host, port, job, build)
   cobertura = "cobertura/api/json?depth=2"
   plugin = (job.downcase.include? "javascript") ? cobertura : jacoco
   http = Net::HTTP.new(host, port)
-  path = "/jenkins/job/#{job}/#{build}/#{plugin}"
+  path = "/job/#{job}/#{build}/#{plugin}"
   response = http.request(Net::HTTP::Get.new(path))
   
   begin
@@ -55,7 +55,7 @@ SCHEDULER.every '10s', :first_in => 0 do |foo|
 
   begin
     http = Net::HTTP.new(jenkins_host, port)
-    response = http.request(Net::HTTP::Get.new("/jenkins/view/Dashboard/api/json?depth=1"))
+    response = http.request(Net::HTTP::Get.new("/view/Dashboard/api/json?depth=1"))
 
     jobs = JSON.parse(response.body)["jobs"]
 
