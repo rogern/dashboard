@@ -6,7 +6,8 @@
         <tr data-foreach-item="item.servers">
           <td data-bind="item.title"></td>
           <td data-bind="item.revision"></td>
-          <td data-bind="item.built"></td>
+          <td data-hideif="item.displayversion" data-bind="item.built"></td>
+          <td data-showif="item.displayversion" data-bind="item.version"></td>
         </tr>
       </table>
     </td>

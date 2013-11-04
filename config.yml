@@ -7,12 +7,14 @@ calendar:
 buildinfo:
   envs:
     - title: 'Stage'
+      displayversion: false
       urls:
         - title: frontend
           url: https://somedomain-stage/buildinfo
         - title: backend
           url: https://somedomain-stage/api/buildinfo
     - title: 'Production'
+      displayversion: true
       urls:
         - title: frontend
           url: https://somedomain/buildinfo

@@ -28,7 +28,9 @@ SCHEDULER.every '60s', :first_in => 0 do |foo|
         server = {
           title: url['title'],
           revision: binfo['gitRevision'],
-          built: binfo['buildTime']
+          built: binfo['buildTime'],
+          displayversion: env['displayversion'],
+          version: binfo['version']
         }
 
         servers << server
@@ -39,7 +41,9 @@ SCHEDULER.every '60s', :first_in => 0 do |foo|
         server = {
           title: url['title'],
           revision: 'n/a',
-          built: 'n/a'
+          built: 'n/a',
+          displayversion: env['displayversion'],
+          version: 'n/a'
         }
 
         servers << server
