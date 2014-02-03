@@ -6,6 +6,7 @@ require 'net/https'
 require 'rexml/document'
 require 'date'
 require 'erb'
+require 'htmlentities'
 
 config = YAML.load(File.read("config.yml"))
 url_to_calendar = config["calendar"]["url"]
@@ -43,37 +44,23 @@ SCHEDULER.every '5m', :first_in => 0 do |foo|
   doc = REXML::Document.new( xml_data )
 
   titles = []
-  content = []
 
-  doc.elements.each('feed/entry/title'){ |e| titles << e.text }
-  doc.elements.each('feed/entry/content'){ |e| content << e.text }
-
-  events= []
-
-  titles.each_with_index do |title, idx|
-    if content[idx] =~ /.*:\s\S+\s(\d+-\d+-\d+) till\s\S+\s(\d+-\d+-\d+)/
-      new_event = Event.new(title, $1, $2)
-    elsif content[idx] =~ /.*:\s\S+\s(\d+-\d+-\d+).*/
-      new_event = Event.new(title, $1, $1)
-    end
-    events << new_event
-  end
-
+  doc.elements.each('feed/entry/title'){ |e| titles << HTMLEntities.new.decode(e.text) }
 
   free = false
   other = false
 
-  events.each do |event|
-    if event.title =~ /(semester)/i || event.title =~ /(ledig)/i || event.title =~ /(klämdag)/i
+  titles.each do |title|
+    if title =~ /(semester)/i || title =~ /(ledig)/i || title =~ /(klämdag)/i
       if free == false
         free = []
       end
-      free << developers.select{ |name| event.title.include? name}
+      free << developers.select{ |name| title.include? name}
     else
       if other == false
         other = []
       end
-      other << event.title
+      other << title
     end
   end
 
