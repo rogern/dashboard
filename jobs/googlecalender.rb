@@ -47,19 +47,13 @@ SCHEDULER.every '5m', :first_in => 0 do |foo|
 
   doc.elements.each('feed/entry/title'){ |e| titles << HTMLEntities.new.decode(e.text) }
 
-  free = false
-  other = false
+  free = []
+  other = []
 
   titles.each do |title|
     if title =~ /(semester)/i || title =~ /(ledig)/i || title =~ /(klämdag)/i
-      if free == false
-        free = []
-      end
       free << developers.select{ |name| title.include? name}
     else
-      if other == false
-        other = []
-      end
       other << title
     end
   end

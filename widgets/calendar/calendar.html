@@ -1,2 +1,6 @@
-<span class="line-item" data-showif="items.free" data-bind="items.free | prepend 'Semester: ' "></span>
-<span class="line-item" data-showif="items.other" data-bind="items.other | append 'hej'"></span>
+<span class="line-item" data-showif="items.free.length">
+  Semester: <span data-foreach-free="items.free" class="highlighted-line-item" data-bind="free"></span>
+</span>
+<span class="line-item" data-showif="items.other.length">
+  <span data-foreach-other="items.other" class="highlighted-line-item" data-bind="other"></span>
+</span>

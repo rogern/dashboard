@@ -1,5 +1,6 @@
 .widget-calendar {
 $background-color:  #3b3b3b;
+$light-background-color:  #6c6c6c;
 $value-color:       rgba(255, 255, 255, 0.8);
 $title-color:       rgba(255, 255, 255, 0.8);
 $label-color:       rgba(255, 255, 255, 0.8);
@@ -11,7 +12,6 @@ $moreinfo-color:    rgba(255, 255, 255, 0.8);
   margin: 0 0 !important;
 
   .line-item {
-    height: 100%;
     border: 0px solid transparent;
     margin-right: 5px;
     display: inline-block;
@@ -19,5 +19,15 @@ $moreinfo-color:    rgba(255, 255, 255, 0.8);
     padding: 12px 12px;
     background-color: $background-color;
     color: $value-color;
+  }
+
+  .highlighted-line-item {
+    background-color: $light-background-color;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-right: 5px;
+    margin-left: 5px;
+    padding: 2px;
+    display: inline-block;
   }
 }
