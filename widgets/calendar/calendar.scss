@@ -14,15 +14,14 @@ $moreinfo-color:    rgba(255, 255, 255, 0.8);
   .line-item {
     border: 0px solid transparent;
     margin-right: 5px;
-    display: inline-block;
+    display: block;
     font-size: 40px;
     padding: 12px 12px;
-    background-color: $background-color;
     color: $value-color;
   }
 
   .highlighted-line-item {
-    background-color: $light-background-color;
+    background-color: $background-color;
     margin-top: 5px;
     margin-bottom: 5px;
     margin-right: 5px;
