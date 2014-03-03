@@ -4,3 +4,5 @@ Gemfile.lock
 myconfig.yml
 history.yml
 *.iml
+*.ipr
+*.iws
