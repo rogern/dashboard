@@ -47,7 +47,8 @@ def get_logs(json)
     if k =~ /.*Appender\.(error)|(warn)/
         log = {
             name: k[k.rindex('.')+1..-1],
-            count: v['count']
+            count: v['count'],
+            m1rate: v['m1_rate']
         }
       result << log
     end
@@ -61,7 +62,8 @@ def get_access(json)
     unless k =~ /.*Appender.*/
       access = {
           name: k,
-          count: v['count']
+          count: v['count'],
+          m1rate: v['m1_rate']
       }
       accesses << access
     end
@@ -75,13 +77,14 @@ def prepare_hotness_data(envs)
   envs.each do |env|
     response = fetch_metrics_detailed(env['url'])
     json = JSON.parse(response.body)['meters']
+    p json
 
     logs = get_logs(json)
     logs.each do |log|
       data_id = "#{env['prefix']} #{log[:name]}"
       result << {
           key: data_id,
-          value: log[:count],
+          value: log[:m1rate].to_f.round(2),
           hotness: 'hotness'
       }
     end
@@ -91,7 +94,7 @@ def prepare_hotness_data(envs)
       data_id = "#{env['prefix']} #{access[:name]}"
       result << {
           key: data_id,
-          value: access[:count],
+          value: access[:m1rate].to_f.round(2),
           hotness: 'hotness'
       }
     end
@@ -107,7 +110,7 @@ def update_hotness(metrics, dataMap)
     end
 
     list = dataMap[metric[:key]]
-    val = metric[:value].to_f
+    val = metric[:value]
 
     avg = list.inject{ |sum, el| sum + el }.to_f / list.size
 
@@ -127,13 +130,13 @@ def update_hotness(metrics, dataMap)
     end
 
     list << val
-    if list.length > 4 * 48
+    if list.length > 60 * 48
       list.shift
     end
   end
 end
 
-SCHEDULER.every '15m', :first_in => 0 do
+SCHEDULER.every '1m', :first_in => 0 do
   metrics = prepare_hotness_data(envs)
   update_hotness(metrics, dataMap)
   send_event('metrics', {items: metrics})
