@@ -32,8 +32,7 @@ def prepare_metrics_data(sources)
     json = JSON.parse(response.body)['meters']
     info = {
         title: source[:name],
-        logs: get_logs(json),
-        access: get_access(json)
+        metrics: get_metrics(json)
     }
 
     infos << info
@@ -41,34 +40,19 @@ def prepare_metrics_data(sources)
   infos
 end
 
-def get_logs(json)
+def get_meters(json)
   result = []
   json.each do |k,v|
-    if k =~ /.*Appender\.(error)|(warn)/
-        log = {
-            name: k[k.rindex('.')+1..-1],
-            count: v['count'],
-            m1rate: v['m1_rate']
-        }
+    if k =~ /.*Appender\.(error)|(warn)/ or k !~ /.*Appender.*/
+      log = {
+          name: k.include?('.') ? k[k.rindex('.')+1..-1] : k,
+          count: v['count'],
+          m1rate: v['m1_rate']
+      }
       result << log
     end
   end
   result
-end
-
-def get_access(json)
-  accesses = []
-  json.each do |k,v|
-    unless k =~ /.*Appender.*/
-      access = {
-          name: k,
-          count: v['count'],
-          m1rate: v['m1_rate']
-      }
-      accesses << access
-    end
-  end
-  accesses
 end
 
 def prepare_hotness_data(envs)
@@ -77,24 +61,13 @@ def prepare_hotness_data(envs)
   envs.each do |env|
     response = fetch_metrics_detailed(env['url'])
     json = JSON.parse(response.body)['meters']
-    p json
 
-    logs = get_logs(json)
-    logs.each do |log|
-      data_id = "#{env['prefix']} #{log[:name]}"
+    meters = get_meters(json)
+    meters.each do |meter|
+      data_id = "#{env['prefix']} #{meter[:name]}"
       result << {
           key: data_id,
-          value: log[:m1rate].to_f.round(2),
-          hotness: 'hotness'
-      }
-    end
-
-    accesses = get_access(json)
-    accesses.each do |access|
-      data_id = "#{env['prefix']} #{access[:name]}"
-      result << {
-          key: data_id,
-          value: access[:m1rate].to_f.round(2),
+          value: meter[:m1rate].to_f.round(2),
           hotness: 'hotness'
       }
     end
