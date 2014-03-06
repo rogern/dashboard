@@ -4,3 +4,4 @@ Gemfile.lock
 myconfig.yml
 history.yml
 *.iml
+private_key.pem
