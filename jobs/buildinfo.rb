@@ -3,7 +3,7 @@ envs = config["buildinfo"]["envs"]
 
 last_infos = []
 
-SCHEDULER.every '60s', :first_in => 0 do |foo|
+SCHEDULER.every '60s', :first_in => 0 do
   infos = []
 
   envs.each do |env|
