@@ -90,13 +90,13 @@ def update_hotness(metrics, dataMap)
     diff = val > avg ? val / avg : avg / val
     diff = diff.nan? ? 0 : diff
 
-    if diff <= 1.2
+    if diff <= 2
       metric[:hotness] += '0'
-    elsif diff <= 1.4
+    elsif diff <= 4
       metric[:hotness] += '1'
-    elsif diff <= 1.6
+    elsif diff <= 8
       metric[:hotness] += '2'
-    elsif diff <= 1.8
+    elsif diff <= 16
       metric[:hotness] += '3'
     else
       metric[:hotness] += '4'
