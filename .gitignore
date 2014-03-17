@@ -4,5 +4,9 @@ Gemfile.lock
 myconfig.yml
 history.yml
 *.iml
+<<<<<<< HEAD
 *.ipr
 *.iws
+=======
+private_key.pem
+>>>>>>> upstream/master

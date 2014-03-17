@@ -65,6 +65,7 @@ SCHEDULER.every '5m', :first_in => 0 do |foo|
   if todays_events != last_events
     last_events = todays_events
     send_event('calendar', { items: todays_events })
+    puts 'pushed new calendar event'
   end
 end
 

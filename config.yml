@@ -20,3 +20,9 @@ buildinfo:
           url: https://somedomain/buildinfo
         - title: backend
           url: https://somedomain/api/buildinfo
+metrics:
+  envs:
+    - prefix: FIRST
+      url: https://somedomain/api/metrics
+    - prefix: SECOND
+      url: https://someotherdomain/api/metrics
