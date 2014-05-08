@@ -25,21 +25,6 @@ def fetch_metrics_detailed(url)
   response
 end
 
-def prepare_metrics_data(sources)
-  infos = []
-  sources.each do |source|
-    response = fetch_metrics_detailed(source[:url])
-    json = JSON.parse(response.body)['meters']
-    info = {
-        title: source[:name],
-        metrics: get_metrics(json)
-    }
-
-    infos << info
-  end
-  infos
-end
-
 def get_meters(json)
   result = []
   json.each do |k,v|
@@ -55,20 +40,44 @@ def get_meters(json)
   result
 end
 
+def get_counters(json)
+  result = []
+  json.each do |k,v|
+    log = {
+        name: k.include?('.') ? k[k.rindex('.')+1..-1] : k,
+        count: v['count']
+    }
+    result << log
+  end
+  result
+end
+
 def prepare_hotness_data(envs)
   result = []
 
   envs.each do |env|
     response = fetch_metrics_detailed(env['url'])
-    json = JSON.parse(response.body)['meters']
+    json = JSON.parse(response.body)
 
-    meters = get_meters(json)
+    meters = get_meters(json['meters'])
     meters.each do |meter|
       data_id = "#{env['prefix']} #{meter[:name]}"
       result << {
           key: data_id,
           value: meter[:m1rate].to_f.round(2),
-          hotness: 'hotness'
+          hotness: 'hotness',
+          suffix: '/min'
+      }
+    end
+
+    counters = get_counters(json['counters'])
+    counters.each do |counter|
+      data_id = "#{env['prefix']} #{counter[:name]}"
+      result << {
+          key: data_id,
+          value: counter[:count].to_f.round(2),
+          hotness: 'hotness',
+          suffix: ''
       }
     end
   end
