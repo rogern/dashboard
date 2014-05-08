@@ -55,20 +55,46 @@ def get_meters(json)
   result
 end
 
+def get_counters(json)
+  result = []
+  json.each do |k,v|
+    if k =~ /.*Appender\.(error)|(warn)/ or k !~ /.*Appender.*/
+      log = {
+          name: k.include?('.') ? k[k.rindex('.')+1..-1] : k,
+          count: v['count']
+      }
+      result << log
+    end
+  end
+  result
+end
+
 def prepare_hotness_data(envs)
   result = []
 
   envs.each do |env|
     response = fetch_metrics_detailed(env['url'])
-    json = JSON.parse(response.body)['meters']
+    json = JSON.parse(response.body)
 
-    meters = get_meters(json)
+    meters = get_meters(json['meters'])
     meters.each do |meter|
       data_id = "#{env['prefix']} #{meter[:name]}"
       result << {
           key: data_id,
           value: meter[:m1rate].to_f.round(2),
-          hotness: 'hotness'
+          hotness: 'hotness',
+          suffix: '/min'
+      }
+    end
+
+    counters = get_counters(json['counters'])
+    counters.each do |counter|
+      data_id = "#{env['prefix']} #{counter[:name]}"
+      result << {
+          key: data_id,
+          value: counter[:count].to_f.round(2),
+          hotness: 'hotness',
+          suffix: ''
       }
     end
   end
