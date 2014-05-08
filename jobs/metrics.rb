@@ -25,21 +25,6 @@ def fetch_metrics_detailed(url)
   response
 end
 
-def prepare_metrics_data(sources)
-  infos = []
-  sources.each do |source|
-    response = fetch_metrics_detailed(source[:url])
-    json = JSON.parse(response.body)['meters']
-    info = {
-        title: source[:name],
-        metrics: get_metrics(json)
-    }
-
-    infos << info
-  end
-  infos
-end
-
 def get_meters(json)
   result = []
   json.each do |k,v|
