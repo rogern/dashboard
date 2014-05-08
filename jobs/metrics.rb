@@ -43,13 +43,11 @@ end
 def get_counters(json)
   result = []
   json.each do |k,v|
-    if k =~ /.*Appender\.(error)|(warn)/ or k !~ /.*Appender.*/
-      log = {
-          name: k.include?('.') ? k[k.rindex('.')+1..-1] : k,
-          count: v['count']
-      }
-      result << log
-    end
+    log = {
+        name: k.include?('.') ? k[k.rindex('.')+1..-1] : k,
+        count: v['count']
+    }
+    result << log
   end
   result
 end
