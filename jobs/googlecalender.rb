@@ -59,6 +59,8 @@ SCHEDULER.every '5m', :first_in => 0 do |foo|
       event_start = $1 + "T" + $2 + ":00+02.00"
       event_end = $1 + "T" + $3 + ":00+02.00"
       events << Event.new(title, event_start, event_end)
+    elsif content[idx] =~ /.*:\s\S+\s(\d+-\d+-\d+)/
+      events << Event.new(title, $1, $1)
     end
   end
 
@@ -73,7 +75,7 @@ SCHEDULER.every '5m', :first_in => 0 do |foo|
     if event.title =~ /(semester)/i || event.title =~ /(ledig)/i || event.title =~ /(klämdag)/i
       free << developers.select{ |name| event.title.include? name}
     else
-      other << title
+      other << event.title
     end
   end
 
