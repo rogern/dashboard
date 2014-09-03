@@ -1,23 +1,8 @@
 .widget-buildinfo {
-$background-color:  #3b3b3b;
-$value-color:       rgba(255, 255, 255, 0.8);
-$title-color:       rgba(255, 255, 255, 0.8);
-$label-color:       rgba(255, 255, 255, 0.8);
-$moreinfo-color:    rgba(255, 255, 255, 0.8);
-
   background-color: transparent;
   vertical-align: top !important;
   padding: 0 0 !important;
   margin: 0 0 !important;
-
-  table {
-    border-collapse: separate;
-    border-spacing: 7px;
-  }
-
-  td {
-    background-color: $background-color;
-  }
 
   .env {
     font-size: 40px;
@@ -28,7 +13,20 @@ $moreinfo-color:    rgba(255, 255, 255, 0.8);
     background-color: transparent;
   }
 
+  %base-status {
+    float: left;
+    width: 605px;
+    margin: 10px;
+    padding: 5px;
+  }
+
+  .ok {
+    @extend %base-status;
+    background-color: #3b3b3b;
+  }
+
   .fail {
+    @extend %base-status;
     background-color: #ff3d00;
   }
 }

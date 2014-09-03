@@ -8,7 +8,7 @@ SCHEDULER.every '60s', :first_in => 0 do
 
   envs.each do |env|
     servers = []
-    env_ok = ''
+    env_ok = 'ok'
 
     env['urls'].each do |url|
       begin

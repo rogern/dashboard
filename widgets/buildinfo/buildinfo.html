@@ -1,6 +1,6 @@
-<table>
-  <tr data-foreach-item="items">
-    <td data-bind-class="item.ok">
+<div>
+  <div data-foreach-item="items">
+    <div data-bind-class="item.ok">
       <div class="env" data-bind="item.title"></div>
       <table class="sub">
         <tr data-foreach-item="item.servers">
@@ -10,6 +10,6 @@
           <td data-showif="item.displayversion" data-bind="item.version"></td>
         </tr>
       </table>
-    </td>
-  </tr>
-</table>
+    </div>
+  </div>
+</div>
