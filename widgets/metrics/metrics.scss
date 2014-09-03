@@ -1,10 +1,10 @@
-$background-color: #000000;
-$value-color: #FFFFFF;
-$title-color: rgba(255, 255, 255, 0.7);
-
 .widget-metrics {
+  vertical-align: top !important;
+  padding: 0 0 !important;
+  margin: 0 0 !important;
+
   div {
-    background-color: $background-color;
+    background-color: #000;
 
     margin: 10px;
     padding-top: 40px;
@@ -13,11 +13,11 @@ $title-color: rgba(255, 255, 255, 0.7);
     float: left;
 
     .title {
-      color: $title-color;
+      color: #fff;
     }
 
     .value {
-      color: $value-color;
+      color: #fff;
     }
   }
 
