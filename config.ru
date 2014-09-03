@@ -1,3 +1,4 @@
+require 'sinatra/cyclist'
 require 'dashing'
 
 configure do
@@ -14,5 +15,7 @@ end
 map Sinatra::Application.assets_prefix do
   run Sinatra::Application.sprockets
 end
+
+set :routes_to_cycle_through, [:main, :buildinfo, :metrics]
 
 run Sinatra::Application
