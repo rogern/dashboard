@@ -11,14 +11,15 @@ require 'htmlentities'
 config = YAML.load(File.read("config.yml"))
 url_to_calendar = config["calendar"]["url"]
 developers = config["calendar"]["developers"]
-class Event 
+
+class Event
   attr_accessor :title, :start_time, :end_time
 
-    def initialize(title, start_time, end_time)
-      @start_time=Date.parse(start_time)
-      @end_time=Date.parse(end_time)
-      @title=title
-    end  
+  def initialize(title, start_time, end_time)
+    @start_time = DateTime.parse(start_time)
+    @end_time = DateTime.parse(end_time)
+    @title = title
+  end
 end
 
 def fetch_feed url
@@ -44,22 +45,40 @@ SCHEDULER.every '5m', :first_in => 0 do |foo|
   doc = REXML::Document.new( xml_data )
 
   titles = []
+  content = []
 
   doc.elements.each('feed/entry/title'){ |e| titles << HTMLEntities.new.decode(e.text) }
+  doc.elements.each('feed/entry/content'){ |e| content << e.text }
+
+  events = []
+
+  titles.each_with_index do |title, idx|
+    if content[idx] =~ /.*:\s\S+\s(\d+-\d+-\d+) till\s\S+\s(\d+-\d+-\d+)/
+      events << Event.new(title, $1, $2)
+    elsif content[idx] =~ /.*:\s\S+\s(\d+-\d+-\d+)\s(\d+:\d+)\still\s(\d+:\d+).*/
+      event_start = $1 + "T" + $2 + ":00+02.00"
+      event_end = $1 + "T" + $3 + ":00+02.00"
+      events << Event.new(title, event_start, event_end)
+    end
+  end
 
   free = []
   other = []
 
-  titles.each do |title|
-    if title =~ /(semester)/i || title =~ /(ledig)/i || title =~ /(klämdag)/i
-      free << developers.select{ |name| title.include? name}
+  events.each do |event|
+    if (event.start_time != event.end_time) && (event.end_time <= DateTime.now)
+      next
+    end
+
+    if event.title =~ /(semester)/i || event.title =~ /(ledig)/i || event.title =~ /(klämdag)/i
+      free << developers.select{ |name| event.title.include? name}
     else
       other << title
     end
   end
 
   todays_events = {
-      free: free, other: other
+    free: free, other: other
   }
 
   if todays_events != last_events
@@ -68,4 +87,3 @@ SCHEDULER.every '5m', :first_in => 0 do |foo|
     puts 'pushed new calendar event'
   end
 end
-
